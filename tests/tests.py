@@ -2,7 +2,7 @@ import time
 import unittest
 from datetime import datetime
 
-from src.flakemaker import SnowflakeGenerator
+from src.rollplayerlib import SnowflakeGenerator
 
 class TestSnowflakeGenerator(unittest.TestCase):
     def setUp(self):
