@@ -2,10 +2,10 @@ import random
 import re
 from typing import List
 
-from enums import OperationEnum, FormatType, SolveMode
-from exceptions import RollException
-from formatting import Format
-from bonuses import Bonus, TargetedBonus
+from .enums import OperationEnum, FormatType, SolveMode
+from .exceptions import RollException
+from .formatting import Format
+from .bonuses import Bonus, TargetedBonus
 
 
 class BasicDice:

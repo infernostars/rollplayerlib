@@ -1,7 +1,7 @@
 import re
 
-from enums import ThresholdType, FormatType, FormatEnum
-from exceptions import RollException
+from .enums import ThresholdType, FormatType, FormatEnum
+from .exceptions import RollException
 
 
 class Threshold:

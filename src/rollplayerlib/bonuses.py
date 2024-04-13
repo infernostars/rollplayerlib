@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, List
-from enums import OperationEnum
+from .enums import OperationEnum
 
 ABCBonusTypeVar = TypeVar('ABCBonusTypeVar', bound='ABCBonus')
 
