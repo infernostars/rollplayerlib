@@ -36,9 +36,10 @@ print(result)
 This will output something like:
 ```
 ┏━━━━ 2d6+3 ━━━━ 
-┃ 5, 4
-┃ sum: 12
+┃ 8, 7
+┃ sum: 15
 ```
+Note that the bonus applies to each roll individually.
 ### Targeted Bonuses
 
 You can apply targeted bonuses to specific dice in your roll using the i syntax:
@@ -52,8 +53,10 @@ print(result)
 This will output something like:
 ```
 ┏━━━━ 45d100i1:*20 ━━━━ 
-┃ **360**, 78, 43, 99, 22, 57, 87, 12, 65, 33, 77, 54, 89, 25, 41, 66, 88, 71, 44, 52, 14, 32, 92, 79, 46
-┃ sum: 2013
+┃ 1080, 17, 63, 39, 47, 58, 98, 93, 16, 54, 90, 89, 99, 63, 68, 30, 26, 66, 36, 96
+┃ 8, 85, 47, 3, 79, 5, 46, 56, 41, 41, 67, 45, 83, 44, 14, 19, 31, 96, 82, 98
+┃ 26, 36, 39, 51, 7
+┃ sum: 3377
 ```
 ### Formatting Options
 
@@ -64,7 +67,7 @@ from rollplayerlib import UnifiedDice, SolveMode, Format, FormatType, ThresholdT
 
 # Roll 4d6, keep the highest 3 rolls
 dice = UnifiedDice.new("4d6")
-formatting = Format(FormatType.FORMAT_LIST, threshold=Threshold(1, ThresholdType.GREATER))
+formatting = Format(FormatType.FORMAT_LIST, threshold=Threshold(3, ThresholdType.GREATER))
 result = dice.solve(SolveMode.RANDOM)
 print(result.format(formatting))
 ```
@@ -73,7 +76,7 @@ This will output something like:
 ```
 ┏━━━━ 4d6 ━━━━ 
 ┃ **5**, **4**, **3**, 2
-┃ sum: 12
+┃ sum: 14
 ```
 ## API Reference
 ### `UnifiedDice`
