@@ -11,12 +11,16 @@ class OperationEnum(StrEnum):
     SUBTRACT = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
+    POW = '**'
 
 class FormatEnum(StrEnum):
     LIST = 'l'
     SUM = 's'
     GREATER = '>'
     LESS = '<'
+    EQUALS = '=='
+    TOP = "top"
+    BOTTOM = "bottom"
 
 class FormatType(StrEnum):
     FORMAT_DEFAULT = auto()
@@ -29,3 +33,6 @@ class ThresholdType(StrEnum):
     LESS = auto()
     MAX = auto()
     MIN = auto()
+    EQUALS = auto()
+    TOP = auto()
+    BOTTOM = auto()

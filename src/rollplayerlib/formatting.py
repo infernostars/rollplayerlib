@@ -1,5 +1,5 @@
 import re
-
+from typing import Optional
 from .enums import ThresholdType, FormatType, FormatEnum
 from .exceptions import RollException
 
@@ -20,12 +20,25 @@ class Threshold:
         elif self.threshold_type == ThresholdType.MIN:
             min_value = min(numbers)
             return [num == min_value for num in numbers]
+        elif self.threshold_type == ThresholdType.EQUALS:
+            return [num == self.limit for num in numbers]
+        elif self.threshold_type == ThresholdType.TOP:
+            sorted_numbers = sorted(numbers, reverse=True)
+            top_count = min(self.limit, len(numbers))
+            top_values = set(sorted_numbers[:top_count])
+            return [num in top_values for num in numbers]
+        elif self.threshold_type == ThresholdType.BOTTOM:
+            sorted_numbers = sorted(numbers)
+            bottom_count = min(self.limit, len(numbers))
+            bottom_values = set(sorted_numbers[:bottom_count])
+            return [num in bottom_values for num in numbers]
         else:
             raise RollException("Invalid threshold type (how did you get here?)")
 
 
+
 class Format:
-    def __init__(self, format_type: FormatType, format_args=None, threshold: Threshold = None):
+    def __init__(self, format_type: FormatType, format_args=None, threshold: Optional[Threshold] = None):
         self.format_type = format_type
         self.format_args = format_args
         self.threshold = threshold
@@ -74,5 +87,32 @@ class Format:
                             raise RollException("Attempted to use < with non-integer")
                     else:
                         formatting.threshold = Threshold(int(arg), ThresholdType.MIN)
+                case FormatEnum.EQUALS:
+                    if arg:
+                        try:
+                            formatting.threshold = Threshold(int(arg), ThresholdType.EQUALS)
+                            idx += 1
+                        except ValueError:
+                            raise RollException("Attempted to use == with non-integer")
+                    else:
+                        raise RollException("Attempted to use == without an argument")
+                case FormatEnum.TOP:
+                    idx += 2
+                    if arg:
+                        try:
+                            formatting.threshold = Threshold(int(arg), ThresholdType.TOP)
+                        except ValueError:
+                            raise RollException("Attempted to use top with non-integer")
+                    else:
+                        formatting.threshold = Threshold(1, ThresholdType.TOP)
+                case FormatEnum.BOTTOM:
+                    idx += 5
+                    if arg:
+                        try:
+                            formatting.threshold = Threshold(int(arg), ThresholdType.BOTTOM)
+                        except ValueError:
+                            raise RollException("Attempted to use bottom with non-integer")
+                    else:
+                        formatting.threshold = Threshold(1, ThresholdType.BOTTOM)
             idx += 2 if arg else 1
         return strip, formatting  # temporary!!!!!!!!!

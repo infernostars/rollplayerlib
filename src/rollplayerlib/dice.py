@@ -1,6 +1,6 @@
 import random
 import re
-from typing import List
+from typing import List, Optional
 
 from .enums import OperationEnum, FormatType, SolveMode
 from .exceptions import RollException
@@ -158,9 +158,9 @@ class UnifiedDice:
 
     def __init__(self):
         self.original_string = ""
-        self.targeted_bonuses = []
-        self.bonuses = []
-        self.basic_dice = None
+        self.targeted_bonuses = Optional[List[TargetedBonus]]
+        self.bonuses = Optional[List[Bonus]]
+        self.basic_dice: Optional[BasicDice] = None
 
     def __repr__(self):
         return f"UnifiedDice(TargetedBonuses={self.targeted_bonuses}, Bonuses={self.bonuses}, BasicDice={self.basic_dice})"
@@ -185,6 +185,13 @@ class UnifiedDice:
         dice.original_string = input_string
         split_regex = r'(' + '|'.join(re.escape(op.value) for op in OperationEnum) + r'|i)'
         operations_regex = r'(' + '|'.join(re.escape(op.value) for op in OperationEnum) + r')'
+        # can the int be coerced directly?
+        try:
+            dice.basic_dice = BasicDice(1, 1, int(input_string))
+            return dice
+        except Exception as e:
+            pass
+
         # Initial split to separate BasicDice, Bonus, and TargetedBonus parts
         dice_part, *bonus_parts = re.split(split_regex, input_string, 1)
         bonus_part = ''.join(bonus_parts) if bonus_parts else ''

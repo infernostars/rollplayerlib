@@ -33,6 +33,8 @@ class Bonus(ABCBonus):
                 new_dice.append(i / self.value)
             if self.operation == "*":
                 new_dice.append(i * self.value)
+            if self.operation == "**":
+                new_dice.append(i ** self.value)
         return new_dice
 
     @classmethod
@@ -83,6 +85,8 @@ class TargetedBonus(ABCBonus):
                         temp_dice[i] = dice_val / operation[1]
                     elif operation[0] == "*":
                         temp_dice[i] = dice_val * operation[1]
+                    elif operation[0] == "**":
+                        temp_dice[i] = dice_val ** operation[1]
             # Update new_dice with the results of the current operation
             new_dice = temp_dice[:]
 
@@ -126,12 +130,12 @@ class TargetedBonus(ABCBonus):
         return TargetedBonus(numbers, ops)
 
     @classmethod
-    def parse(cls, input_text) -> list['TargetedBonus']:
+    def parse(cls, input_string) -> list['TargetedBonus']:
         parsed_data_list = []
         # Find the position of the last semicolon
-        last_semicolon_idx = input_text.rfind(';')
+        last_semicolon_idx = input_string.rfind(';')
         # If there's no semicolon, use the entire text; otherwise, use text up to the last semicolon
-        text_to_parse = input_text if last_semicolon_idx == -1 else input_text[:last_semicolon_idx]
+        text_to_parse = input_string if last_semicolon_idx == -1 else input_string[:last_semicolon_idx]
 
         segment_starts = [i for i, char in enumerate(text_to_parse) if char == 'i']  # Find all 'i' positions
 
